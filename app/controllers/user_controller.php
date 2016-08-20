@@ -92,7 +92,7 @@ class user_controller extends controller {
 
         $tb_user = User::get();
         if (!empty($tb_user)) {
-            $tamp = '{"status": "success","data":' . $tb_user . ',"message":"successfully get data"}';
+            $tamp = '{"status": "success","data":' . $tb_user . ',"message":"successfully get dataxx"}';
             $body = $response->getBody();
             $body->write($tamp);
             return $response->withHeader(
