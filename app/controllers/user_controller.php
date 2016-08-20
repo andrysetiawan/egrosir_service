@@ -71,6 +71,7 @@ class user_controller extends controller
 	        	}
 	        	else
 	        	{
+	        		$pass = $this->hash_password->hash($request->getParam('password'));
 	        		$user = new User;
 			        $user->username = $request->getParam('username');
 			        $user->nama = $request->getParam('nama');
@@ -83,7 +84,7 @@ class user_controller extends controller
 			        $user->propinsi = $request->getParam('propinsi');
 			        $user->kelamin = $request->getParam('kelamin');
 			        $user->hp = $request->getParam('hp');
-			        $user->password = $request->getParam('password');
+			        $user->password = $pass;
 			        
 			        if($user->save()) {
 			        	$body = $response->getBody();
@@ -111,7 +112,8 @@ class user_controller extends controller
 	{
 
 		$tb_user=User::get();
-		if(!empty($tb_user))
+
+		if(count($tb_user)>0)
 		{
 			$tamp = '{"status": "success","data":'.$tb_user.',"message":"successfully get data"}';
 			$body = $response->getBody();
@@ -140,7 +142,7 @@ class user_controller extends controller
 		$tb_user=User::where('id', $args['id'])
               	->first();
 
-		if(!empty($tb_user))
+		if(count($tb_user)>0)
 		{
 			$tamp = '{"status": "success","data":'.$tb_user.',"message":"successfully get data"}';
 			$body = $response->getBody();
@@ -195,7 +197,7 @@ class user_controller extends controller
 		{
 			$user=User::where('id', $args['id'])
             	->first();
-	        if(!empty($user))
+	        if(count($user)>0)
 	        {
 	        	$user->username = $request->getParam('username');
 		        $user->nama = $request->getParam('nama');
@@ -249,7 +251,7 @@ class user_controller extends controller
 	{
 		$user=User::where('id', $args['id'])
             ->first();
-        if(!empty($user))
+        if(count($user)>0)
         {
         	if($user->delete()) {
 	        	$body = $response->getBody();
