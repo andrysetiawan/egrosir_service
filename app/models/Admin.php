@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
 * 
 */
-class Barang extends Model
+class Admin extends Model
 {
 	
 	protected $table = 'tb_admin';

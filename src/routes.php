@@ -9,6 +9,7 @@
 //     return $this->renderer->render($response, 'index.phtml', $args);
 // });
 
+
 //Auth Routes
 $app->post('/auth/signup','auth_controller:sign_up');
 $app->post('/auth/signin','auth_controller:sign_in');
@@ -21,4 +22,5 @@ $app->put('/user/update/{id}','user_controller:update');
 $app->delete('/user/delete/{id}','user_controller:delete');
 
 //Barang Routes
-$app->get('barang/add', 'barang_controller:insert');
+$app->get('/barang', 'barang_controller:get_all');
+$app->post('/barang/add', 'barang_controller:insert');

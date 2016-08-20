@@ -5,6 +5,8 @@ namespace App\Controllers;
 use App\Models\User;
 use App\Controllers\controller;
 use Respect\Validation\Validator as v;
+use Firebase\JWT\JWT;
+use Tuupola\Base62;
 
 class auth_controller extends controller
 {
@@ -26,13 +28,27 @@ class auth_controller extends controller
 		}
 		else
 		{
+                    //$now = new Date();
+                    //$future = new DateTime("now +2 hours");
+					$scopes = "all";
+                    $server = $request->getServerParams();
+                    $jti = Base62::encode(random_bytes(16));
+                    $payload = [
+                      //  "iat" => $now->getTimeStamp(),
+                        //"exp" => $future->getTimeStamp(),
+                        "jti" => $jti,
+                        "sub" => $server["PHP_AUTH_USER"],
+                        "scope" => $scopes
+                    ];
+                    $secret = getenv("JWT_SECRET");
+                    $token = JWT::encode($payload, $secret, "HS256");
 			$user=User::select('password')
                 ->where('email', $request->getParam('email'))
                 ->first();
             if($this->hash_password->check_password($user->password,$request->getParam('password')))
             {
             	$body = $response->getBody();
-			    $body->write('{"status": "success","message": "Login success","data":""}');
+			    $body->write('{"status": "success","message": "Login success","data":"'.$token.'"}');
 		    	return $response->withHeader(
 			        'Content-Type',
 			        'application/json'
