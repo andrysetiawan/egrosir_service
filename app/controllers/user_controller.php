@@ -137,7 +137,7 @@ class user_controller extends controller
 		}        	
 
 	}
-	public function get_by_id($request, $response,$args)
+	public function get_by_id($request, $response, $args)
 	{
 		$tb_user=User::where('id', $args['id'])
               	->first();
@@ -167,7 +167,7 @@ class user_controller extends controller
 		
 
 	}
-	public function update($request, $response,$args)
+	public function update($request, $response, $args)
 	{
 		$validation = $this->validator->validate($request,[
 			'username' => v::noWhitespace()->notEmpty(),
