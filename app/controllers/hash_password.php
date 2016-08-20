@@ -6,14 +6,30 @@ namespace App\Controllers;
 */
 class hash_password
 {
-	public function pass_hash($password)
-	{
-		$options = [
-		    'salt' => md5('egrosir_service_app'), //write your own code to generate a suitable salt
-		    'cost' => 12 // the default cost is 10
-		];
-		$hash = password_hash($password, PASSWORD_DEFAULT, $options);
+	// blowfish
+    private static $algo = '$2a';
+    // cost parameter
+    private static $cost = '$12';
+ 
+    // mainly for internal use
+    public static function unique_salt() {
+        return substr(sha1(mt_rand()), 0, 22);
+    }
+ 
+    // this will be used to generate a hash
+    public static function hash($password) {
+ 
+        return crypt($password, self::$algo .
+                self::$cost .
+                '$' . self::unique_salt());
+    }
+ 
+    // this will be used to compare a password against a hash
+    public static function check_password($hash, $password) {
+        $full_salt = substr($hash, 0, 29);
+        $new_hash = crypt($password, $full_salt);
+        return ($hash == $new_hash);
+    }
 
-	}
 
 }
