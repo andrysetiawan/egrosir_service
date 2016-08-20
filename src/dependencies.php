@@ -1,4 +1,5 @@
 <?php
+
 // DIC configuration
 
 $container = $app->getContainer();
@@ -27,15 +28,18 @@ $capsule->bootEloquent();
 $container['db'] = function ($container) {
     return $capsule;
 };
-$container['validator'] = function($container){
+$container['validator'] = function($container) {
     return new \App\Validation\validator;
 };
 $container['hash_password'] = function($container){
     return new \App\Controllers\hash_password;
 };
-$container['user_controller'] = function($container){
-	return new \App\Controllers\user_controller($container);
+$container['user_controller'] = function($container) {
+    return new \App\Controllers\user_controller($container);
 };
-$container['auth_controller'] = function($container){
-	return new \App\Controllers\auth_controller($container);
+$container['auth_controller'] = function($container) {
+    return new \App\Controllers\auth_controller($container);
+};
+$container['barang_controller'] = function($container) {
+    return new \App\Controllers\barang_controller($container);
 };

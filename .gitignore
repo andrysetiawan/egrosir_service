@@ -1,3 +1,7 @@
+<<<<<<< HEAD
 /vendor/
 /logs/*
 !/logs/README.md
+=======
+/nbproject/private/
+>>>>>>> 053a4266724aa16a2c21f205eb1f6e029c4da62a
