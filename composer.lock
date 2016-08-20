@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a51c191e7482a1be14aaebcf68dc9c07",
-    "content-hash": "13d0efc7014465a597d9f823035db28f",
+    "hash": "a02cd0a4b6952565a26eb50d51bb8ef3",
+    "content-hash": "9d98dbc0ff41d91983817b92914ac8d0",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -1049,6 +1049,53 @@
             "description": "Symfony Translation Component",
             "homepage": "https://symfony.com",
             "time": "2016-07-26 08:04:17"
+        },
+        {
+            "name": "tuupola/base62",
+            "version": "0.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tuupola/base62.git",
+                "reference": "d8a2407f6c7bf6049d512ea46182f8cad5286c00"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tuupola/base62/zipball/d8a2407f6c7bf6049d512ea46182f8cad5286c00",
+                "reference": "d8a2407f6c7bf6049d512ea46182f8cad5286c00",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.5 || ^7.0"
+            },
+            "require-dev": {
+                "paragonie/random_compat": "^2.0",
+                "phpunit/phpunit": "^4.8",
+                "squizlabs/php_codesniffer": "^2.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Tuupola\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mika Tuupola",
+                    "email": "tuupola@appelsiini.net",
+                    "homepage": "http://www.appelsiini.net/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Base62 encoder and decoder for arbitrary data",
+            "homepage": "https://github.com/tuupola/base62",
+            "keywords": [
+                "base62"
+            ],
+            "time": "2016-05-06 06:32:13"
         },
         {
             "name": "tuupola/slim-jwt-auth",
