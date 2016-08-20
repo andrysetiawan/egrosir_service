@@ -159,7 +159,7 @@ class auth_controller extends controller
 					    $body->write('{"status": "error","message":"failed to store data"}');
 			        	return $response->withHeader(
 					        'Content-Type',
-					        'application/json'
+					        'application/json' 
 					    )->withStatus(422)->withBody($body);
 			            
 					}
