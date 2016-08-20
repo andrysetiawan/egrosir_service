@@ -30,7 +30,9 @@ $container['db'] = function ($container) {
 $container['validator'] = function($container){
     return new \App\Validation\validator;
 };
-
+$container['hash_password'] = function($container){
+    return new \App\Controllers\hash_password;
+};
 $container['user_controller'] = function($container){
 	return new \App\Controllers\user_controller($container);
 };
