@@ -28,20 +28,20 @@ class auth_controller extends controller
 		}
 		else
 		{
-                    //$now = new Date();
+                    //$now = new DateTime();
                     //$future = new DateTime("now +2 hours");
-					$scopes = "all";
-                    $server = $request->getServerParams();
-                    $jti = Base62::encode(random_bytes(16));
-                    $payload = [
-                      //  "iat" => $now->getTimeStamp(),
-                        //"exp" => $future->getTimeStamp(),
-                        "jti" => $jti,
-                        "sub" => $server["PHP_AUTH_USER"],
-                        "scope" => $scopes
-                    ];
-                    $secret = getenv("JWT_SECRET");
-                    $token = JWT::encode($payload, $secret, "HS256");
+			$scopes="admin";
+            $server = $request->getServerParams();
+            $jti = Base62::encode(random_bytes(16));
+            $payload = [
+                //"iat" => $now->getTimeStamp(),
+                //"exp" => $future->getTimeStamp(),
+                "jti" => $jti,
+                "sub" => $server["PHP_AUTH_USER"],
+                "scope" => $scopes
+            ];
+            $secret = getenv("JWT_SECRET");
+            $token = JWT::encode($payload, $secret, "HS256");
 			$user=User::select('password')
                 ->where('email', $request->getParam('email'))
                 ->first();
@@ -162,7 +162,7 @@ class auth_controller extends controller
 					    $body->write('{"status": "error","message":"failed to store data"}');
 			        	return $response->withHeader(
 					        'Content-Type',
-					        'application/json'
+					        'application/json' 
 					    )->withStatus(422)->withBody($body);
 			            
 					}
