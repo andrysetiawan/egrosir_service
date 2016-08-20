@@ -26,6 +26,31 @@ class auth_controller extends controller
 		}
 		else
 		{
+			$user=User::select('password')
+                ->where('email', $request->getParam('email'))
+                ->first();
+            if($this->hash_password->check_password($user->password,$request->getParam('password')))
+            {
+            	$body = $response->getBody();
+			    $body->write('{"status": "success","message": "Login success","data":""}');
+		    	return $response->withHeader(
+			        'Content-Type',
+			        'application/json'
+			    )->withStatus(202)->withBody($body);
+
+
+            }
+            else
+            {
+            	$body = $response->getBody();
+			    $body->write('{"status": "error","message": "Login failed. Incorrect credentials"}');
+		    	return $response->withHeader(
+			        'Content-Type',
+			        'application/json'
+			    )->withStatus(401)->withBody($body);
+
+            }
+
 
 		}
 
@@ -65,7 +90,7 @@ class auth_controller extends controller
                    	->where('username', $request->getParam('username'))
                    	->first();
         
-	        if(!empty($user_username))
+	        if(count($user_username)>0)
 	        {
 	        	$body = $response->getBody();
 			    $body->write('{"status": "error","message": "username is already taken"}');
@@ -80,7 +105,7 @@ class auth_controller extends controller
 	                   	->where('email', $request->getParam('email'))
 	                   	->first();
 
-	        	if(!empty($user_email))
+	        	if(count($user_email)>0)
 	        	{
 	            	$body = $response->getBody();
 				    $body->write('{"status": "error","message": "email is already taken"}');
@@ -93,6 +118,7 @@ class auth_controller extends controller
 	        	}
 	        	else
 	        	{
+	        		$pass = $this->hash_password->hash($request->getParam('password'));
 	        		$user = new User;
 			        $user->username = $request->getParam('username');
 			        $user->nama = $request->getParam('nama');
@@ -105,7 +131,7 @@ class auth_controller extends controller
 			        $user->propinsi = $request->getParam('propinsi');
 			        $user->kelamin = $request->getParam('kelamin');
 			        $user->hp = $request->getParam('hp');
-			        $user->password = $request->getParam('password');
+			        $user->password = $pass;
 			        
 			        if($user->save()) {
 			        	$body = $response->getBody();
