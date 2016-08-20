@@ -10,10 +10,6 @@
 // });
 
 
-$app->add(new \Slim\Middleware\JwtAuthentication([
-    "secret" => "supersecretkeyyoushouldnotcommittogithub"
-]));
-
 //Auth Routes
 $app->post('/auth/signup','auth_controller:sign_up');
 $app->post('/auth/signin','auth_controller:sign_in');
