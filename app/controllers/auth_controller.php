@@ -30,7 +30,7 @@ class auth_controller extends controller
 		{
                     //$now = new DateTime();
                     //$future = new DateTime("now +2 hours");
-			$scopes="admin";
+			$scopes="all";
             $server = $request->getServerParams();
             $jti = Base62::encode(random_bytes(16));
             $payload = [
