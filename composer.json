@@ -20,7 +20,8 @@
         "slim/csrf": "^0.7.0",
         "tuupola/slim-jwt-auth": "^2.3",
         "respect/validation": "^1.1",
-        "tuupola/base62": "^0.6.0"
+        "tuupola/base62": "^0.6.0",
+        "illuminate/pagination": "^5.2"
     },
     "autoload": {
         "psr-4":{
