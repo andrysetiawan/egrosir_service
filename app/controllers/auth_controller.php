@@ -1,7 +1,6 @@
 <?php
 namespace App\Controllers;
 
-
 use App\Models\User;
 use App\Controllers\controller;
 use Respect\Validation\Validator as v;
@@ -28,27 +27,38 @@ class auth_controller extends controller
 		}
 		else
 		{
-                    //$now = new DateTime();
-                    //$future = new DateTime("now +2 hours");
-			$scopes="all";
-            $server = $request->getServerParams();
+			$requested_scopes = $request->getParam('scope_api');
+			$req_api[] = $requested_scopes;
+			$valid_scopes = [
+		        "admin",
+		        "user",
+		        "public",
+		        "manager"
+		    ];
+
+			$scopes = array_filter($req_api, function ($needle) use ($valid_scopes) {
+				return in_array($needle, $valid_scopes);
+			});
+			// $now = new DateTime();
+			// $future = new DateTime("now +2 hours");
+			$server = $request->getServerParams();
             $jti = Base62::encode(random_bytes(16));
             $payload = [
-                //"iat" => $now->getTimeStamp(),
-                //"exp" => $future->getTimeStamp(),
+                // "iat" => $now->getTimeStamp(),
+                // "exp" => $future->getTimeStamp(),
                 "jti" => $jti,
                 "sub" => $server["PHP_AUTH_USER"],
                 "scope" => $scopes
             ];
-            $secret = getenv("JWT_SECRET");
+            $secret = "hatepnganuikihihamburadul";
             $token = JWT::encode($payload, $secret, "HS256");
-			$user=User::select('password')
-                ->where('email', $request->getParam('email'))
+			$user=User::select('username','password','nama','email','nik','alamat','kelurahan','kecamatan','kabupaten_kota','propinsi','kelamin','hp','foto','verified')
+				->where('email', $request->getParam('email'))
                 ->first();
             if($this->hash_password->check_password($user->password,$request->getParam('password')))
             {
             	$body = $response->getBody();
-			    $body->write('{"status": "success","message": "Login success","data":"'.$token.'"}');
+			    $body->write('{"status": "success","message": "Login success","token":"'.$token.'","data":'.$user.'}');
 		    	return $response->withHeader(
 			        'Content-Type',
 			        'application/json'
@@ -148,6 +158,7 @@ class auth_controller extends controller
 			        $user->kelamin = $request->getParam('kelamin');
 			        $user->hp = $request->getParam('hp');
 			        $user->password = $pass;
+			        $user->foto = $request->getParam('foto');
 			        
 			        if($user->save()) {
 			        	$body = $response->getBody();
@@ -177,9 +188,6 @@ class auth_controller extends controller
 
 		
 	}
-	public function sign_out($request,$response)
-	{
 
-	}
 
 }
