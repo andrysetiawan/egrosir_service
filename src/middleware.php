@@ -12,9 +12,11 @@ $container["token"] = function ($container) {
 
 $container["JwtAuthentication"] = function ($container) {
     return new JwtAuthentication([
-        "path" => ["/user","/admin",
+        "path" => [
+                           "/user","/admin",
         		   "/pasar/add","/pasar/update/","/pasar/delete/",
         		   "/kategori/add","/kategori/update/","kategori/delete/",
+                           "/barang/add", "/barang/update/", "/barang/delete/"
         ],
         "passthrough" => ["/auth/signin"],
         "secret" => "hatepnganuikihihamburadul",

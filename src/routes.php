@@ -46,4 +46,11 @@ $app->delete('/kategori/delete/{id}','kategori_controller:delete');
 
 //Barang Routes
 $app->get('/barang', 'barang_controller:get_all');
+$app->get('/barang/{id}', 'barang_controller:get_by_id');
+$app->get('/barang/kategori/{id}', 'barang_controller:get_by_category');
+$app->get('/barang/pasar/{id}', 'barang_controller:get_by_pasar');
+$app->get('/barang/harga/{harga}', 'barang_controller:get_by_price');//the price must be sent be like 0-25000
+$app->get('/barang/status/{status}', 'barang_controller:get_by_status');
 $app->post('/barang/add', 'barang_controller:insert');
+$app->put('/barang/update/{id}', 'barang_controller:update');
+$app->delete('/barang/delete/{id}', 'barang_controller:delete');
