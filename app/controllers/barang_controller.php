@@ -75,7 +75,11 @@ class barang_controller extends controller {
 
     public function get_all($req, $res) {
 
-        $tb_barang = Barang::get();
+        $tb_barang = Barang::join('tb_kategori AS tk', 'tb_barang.id_kategori', '=', 'tk.id')
+                ->join('tb_pasar AS tp', 'tb_barang.id_pasar', '=', 'tp.id')
+                ->select('tb_barang.*', 'tk.nama_kategori', 'tk.gambar AS gambar_kategori', 'tp.nama_pasar',
+                        'tp.alamat AS alamat_pasar', 'tp.gambar AS gambar_pasar')
+                ->get();
 
         if (count($tb_barang) > 0) {
             $tamp = '{"status": "success","data":' . $tb_barang . ',"message":"successfully get data", "is_error":"false"}';
@@ -185,7 +189,12 @@ class barang_controller extends controller {
     }
 
     public function get_by_id($req, $res, $args) {
-        $barang = Barang::where('id', $args['id'])->first();
+        $barang = Barang::join('tb_kategori AS tk', 'tb_barang.id_kategori', '=', 'tk.id')
+                ->join('tb_pasar AS tp', 'tb_barang.id_pasar', '=', 'tp.id')
+                ->select('tb_barang.*', 'tk.nama_kategori', 'tk.gambar AS gambar_kategori', 'tp.nama_pasar',
+                        'tp.alamat AS alamat_pasar', 'tp.gambar AS gambar_pasar')
+                ->where('tb_barang.id', $args['id'])
+                ->first();
         if (count($barang) > 0) {
             $tamp = '{"status": "success","data":' . $barang . ',"message":"successfully get data", "is_error":"false"}';
             $body = $res->getBody();
@@ -200,7 +209,12 @@ class barang_controller extends controller {
     }
 
     public function get_by_category($req, $res, $args) {
-        $barang = Barang::where('id_kategori', $args['id'])->get();
+        $barang = Barang::join('tb_kategori AS tk', 'tb_barang.id_kategori', '=', 'tk.id')
+                ->join('tb_pasar AS tp', 'tb_barang.id_pasar', '=', 'tp.id')
+                ->select('tb_barang.*', 'tk.nama_kategori', 'tk.gambar AS gambar_kategori', 'tp.nama_pasar',
+                        'tp.alamat AS alamat_pasar', 'tp.gambar AS gambar_pasar')
+                ->where('tb_barang.id_kategori', $args['id'])
+                ->get();
         if (count($barang) > 0) {
             $tamp = '{"status": "success","data":' . $barang . ',"message":"successfully get data", "is_error":"false"}';
             $body = $res->getBody();
@@ -215,7 +229,12 @@ class barang_controller extends controller {
     }
 
     public function get_by_pasar($req, $res, $args) {
-        $barang = Barang::where('id_pasar', $args['id'])->get();
+        $barang = Barang::join('tb_kategori AS tk', 'tb_barang.id_kategori', '=', 'tk.id')
+                ->join('tb_pasar AS tp', 'tb_barang.id_pasar', '=', 'tp.id')
+                ->select('tb_barang.*', 'tk.nama_kategori', 'tk.gambar AS gambar_kategori', 'tp.nama_pasar',
+                        'tp.alamat AS alamat_pasar', 'tp.gambar AS gambar_pasar')
+                ->where('tb_barang.id_pasar', $args['id'])
+                ->get();
         if (count($barang) > 0) {
             $tamp = '{"status": "success","data":' . $barang . ',"message":"successfully get data", "is_error":"false"}';
             $body = $res->getBody();
@@ -230,20 +249,27 @@ class barang_controller extends controller {
     }
 
     public function get_by_status($req, $res, $args) {
-
+        $status = "";
         if (strtolower($args['status']) == "nego") {
-            $barang = Barang::where('status_nego', 'Y')->get();
+            $status = "status_nego";
         } elseif (strtolower($args['status']) == "diskon") {
-            $barang = Barang::where('status_diskon', 'Y')->get();
+            $status = "status_diskon";
         } elseif (strtolower($args['status']) == "cuci_gudang") {
-            $barang = Barang::where('status_cuci_gudang', 'Y')->get();
+            $status = "status_cuci_gudang";
         } else {
             $tamp = '{"status": "error","message":"Parameter not valid", "is_error":"true"}';
             $body = $res->getBody();
             $body->write($tamp);
             return $res->withHeader('Content-Type', 'application/json')->withStatus(404)->withBody($body);
         }
-
+        
+        $barang = Barang::join('tb_kategori AS tk', 'tb_barang.id_kategori', '=', 'tk.id')
+                ->join('tb_pasar AS tp', 'tb_barang.id_pasar', '=', 'tp.id')
+                ->select('tb_barang.*', 'tk.nama_kategori', 'tk.gambar AS gambar_kategori', 'tp.nama_pasar',
+                        'tp.alamat AS alamat_pasar', 'tp.gambar AS gambar_pasar')
+                ->where($status, 'Y')
+                ->get();
+        
         if (count($barang) > 0) {
             $tamp = '{"status": "success","data":' . $barang . ',"message":"successfully get data", "is_error":"false"}';
             $body = $res->getBody();
@@ -260,7 +286,12 @@ class barang_controller extends controller {
     public function get_by_price($req, $res, $args) {
         $harga = explode('-', $args['harga']);
 
-        $barang = Barang::whereBetween('harga', [$harga[0], $harga[1]])->get();
+        $barang = Barang::join('tb_kategori AS tk', 'tb_barang.id_kategori', '=', 'tk.id')
+                ->join('tb_pasar AS tp', 'tb_barang.id_pasar', '=', 'tp.id')
+                ->select('tb_barang.*', 'tk.nama_kategori', 'tk.gambar AS gambar_kategori', 'tp.nama_pasar',
+                        'tp.alamat AS alamat_pasar', 'tp.gambar AS gambar_pasar')
+                ->whereBetween('harga', [$harga[0], $harga[1]])
+                ->get();
         if (count($barang) > 0) {
             $tamp = '{"status": "success","data":' . $barang . ',"message":"successfully get data", "is_error":"false"}';
             $body = $res->getBody();
