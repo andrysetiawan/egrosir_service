@@ -44,6 +44,13 @@ class barang_controller extends controller {
             return $res->withHeader('Content-Type', 'application/json')->withStatus(422)->withBody($body);
         } else {
 
+            $kode_barang = function($req) {
+                $nama = strtoupper(substr($req->getParam('nama'), 0, 3));
+                $tgl = date('d');
+                $kategori = $req->getParam('id_kategori');
+                return $nama."-".$tgl."-".$kategori;
+            };
+
             $barang = new Barang();
             $barang->nama = $req->getParam('nama');
             $barang->harga = $req->getParam('harga');
@@ -53,6 +60,7 @@ class barang_controller extends controller {
             $barang->status_nego = $req->getParam('status_nego');
             $barang->status_diskon = $req->getParam('status_diskon');
             $barang->status_cuci_gudang = $req->getParam('status_cuci_gudang');
+            $barang->kode_barang = $kode_barang($req);
             $barang->jasa_pengiriman = $req->getParam('jasa_pengiriman');
             $barang->berat = $req->getParam('berat');
             $barang->gambar = $req->getParam('gambar');
@@ -77,12 +85,12 @@ class barang_controller extends controller {
 
         $tb_barang = Barang::join('tb_kategori AS tk', 'tb_barang.id_kategori', '=', 'tk.id')
                 ->join('tb_pasar AS tp', 'tb_barang.id_pasar', '=', 'tp.id')
-                ->select('tb_barang.*', 'tk.nama_kategori', 'tk.gambar AS gambar_kategori', 'tp.nama_pasar',
-                        'tp.alamat AS alamat_pasar', 'tp.gambar AS gambar_pasar')
-                ->get();
+                ->select('tb_barang.*', 'tk.nama_kategori', 'tk.gambar AS gambar_kategori', 'tp.nama_pasar', 'tp.alamat AS alamat_pasar', 'tp.gambar AS gambar_pasar')
+                ->paginate(10);
+        $json_barang = $tb_barang->toJson();
 
         if (count($tb_barang) > 0) {
-            $tamp = '{"status": "success","data":' . $tb_barang . ',"message":"successfully get data", "is_error":"false"}';
+            $tamp = '{"status": "success","data":' . $json_barang . ',"message":"successfully get data", "is_error":"false"}';
             $body = $res->getBody();
             $body->write($tamp);
             return $res->withHeader('Content-Type', 'application/json')->withStatus(202)->withBody($body);
@@ -153,7 +161,7 @@ class barang_controller extends controller {
                         return $res->withHeader('Content-Type', 'application/json')->withStatus(422)->withBody($body);
                     }
                 } else {
-                    $tamp = '{"status": "error","message":"failed to update data", "is_error": "true"}';
+                    $tamp = '{"status": "error","message":"failed to update data, data not found", "is_error": "true"}';
                     $body = $res->getBody();
                     $body->write($tamp);
                     return $res->withHeader('Content-Type', 'application/json')->withStatus(404)->withBody($body);
@@ -191,8 +199,7 @@ class barang_controller extends controller {
     public function get_by_id($req, $res, $args) {
         $barang = Barang::join('tb_kategori AS tk', 'tb_barang.id_kategori', '=', 'tk.id')
                 ->join('tb_pasar AS tp', 'tb_barang.id_pasar', '=', 'tp.id')
-                ->select('tb_barang.*', 'tk.nama_kategori', 'tk.gambar AS gambar_kategori', 'tp.nama_pasar',
-                        'tp.alamat AS alamat_pasar', 'tp.gambar AS gambar_pasar')
+                ->select('tb_barang.*', 'tk.nama_kategori', 'tk.gambar AS gambar_kategori', 'tp.nama_pasar', 'tp.alamat AS alamat_pasar', 'tp.gambar AS gambar_pasar')
                 ->where('tb_barang.id', $args['id'])
                 ->first();
         if (count($barang) > 0) {
@@ -211,12 +218,13 @@ class barang_controller extends controller {
     public function get_by_category($req, $res, $args) {
         $barang = Barang::join('tb_kategori AS tk', 'tb_barang.id_kategori', '=', 'tk.id')
                 ->join('tb_pasar AS tp', 'tb_barang.id_pasar', '=', 'tp.id')
-                ->select('tb_barang.*', 'tk.nama_kategori', 'tk.gambar AS gambar_kategori', 'tp.nama_pasar',
-                        'tp.alamat AS alamat_pasar', 'tp.gambar AS gambar_pasar')
+                ->select('tb_barang.*', 'tk.nama_kategori', 'tk.gambar AS gambar_kategori', 'tp.nama_pasar', 'tp.alamat AS alamat_pasar', 'tp.gambar AS gambar_pasar')
                 ->where('tb_barang.id_kategori', $args['id'])
-                ->get();
+                ->paginate(10);
+        $json_barang = $tb_barang->toJson();
+        
         if (count($barang) > 0) {
-            $tamp = '{"status": "success","data":' . $barang . ',"message":"successfully get data", "is_error":"false"}';
+            $tamp = '{"status": "success","data":' . $json_barang . ',"message":"successfully get data", "is_error":"false"}';
             $body = $res->getBody();
             $body->write($tamp);
             return $res->withHeader('Content-Type', 'application/json')->withStatus(200)->withBody($body);
@@ -231,12 +239,12 @@ class barang_controller extends controller {
     public function get_by_pasar($req, $res, $args) {
         $barang = Barang::join('tb_kategori AS tk', 'tb_barang.id_kategori', '=', 'tk.id')
                 ->join('tb_pasar AS tp', 'tb_barang.id_pasar', '=', 'tp.id')
-                ->select('tb_barang.*', 'tk.nama_kategori', 'tk.gambar AS gambar_kategori', 'tp.nama_pasar',
-                        'tp.alamat AS alamat_pasar', 'tp.gambar AS gambar_pasar')
+                ->select('tb_barang.*', 'tk.nama_kategori', 'tk.gambar AS gambar_kategori', 'tp.nama_pasar', 'tp.alamat AS alamat_pasar', 'tp.gambar AS gambar_pasar')
                 ->where('tb_barang.id_pasar', $args['id'])
-                ->get();
+                ->paginate(10);
+        $json_barang = $tb_barang->toJson();
         if (count($barang) > 0) {
-            $tamp = '{"status": "success","data":' . $barang . ',"message":"successfully get data", "is_error":"false"}';
+            $tamp = '{"status": "success","data":' . $json_barang . ',"message":"successfully get data", "is_error":"false"}';
             $body = $res->getBody();
             $body->write($tamp);
             return $res->withHeader('Content-Type', 'application/json')->withStatus(200)->withBody($body);
@@ -262,16 +270,16 @@ class barang_controller extends controller {
             $body->write($tamp);
             return $res->withHeader('Content-Type', 'application/json')->withStatus(404)->withBody($body);
         }
-        
+
         $barang = Barang::join('tb_kategori AS tk', 'tb_barang.id_kategori', '=', 'tk.id')
                 ->join('tb_pasar AS tp', 'tb_barang.id_pasar', '=', 'tp.id')
-                ->select('tb_barang.*', 'tk.nama_kategori', 'tk.gambar AS gambar_kategori', 'tp.nama_pasar',
-                        'tp.alamat AS alamat_pasar', 'tp.gambar AS gambar_pasar')
+                ->select('tb_barang.*', 'tk.nama_kategori', 'tk.gambar AS gambar_kategori', 'tp.nama_pasar', 'tp.alamat AS alamat_pasar', 'tp.gambar AS gambar_pasar')
                 ->where($status, 'Y')
-                ->get();
-        
+                ->paginate(10);
+        $json_barang = $tb_barang->toJson();
+
         if (count($barang) > 0) {
-            $tamp = '{"status": "success","data":' . $barang . ',"message":"successfully get data", "is_error":"false"}';
+            $tamp = '{"status": "success","data":' . $json_barang . ',"message":"successfully get data", "is_error":"false"}';
             $body = $res->getBody();
             $body->write($tamp);
             return $res->withHeader('Content-Type', 'application/json')->withStatus(200)->withBody($body);
@@ -288,12 +296,13 @@ class barang_controller extends controller {
 
         $barang = Barang::join('tb_kategori AS tk', 'tb_barang.id_kategori', '=', 'tk.id')
                 ->join('tb_pasar AS tp', 'tb_barang.id_pasar', '=', 'tp.id')
-                ->select('tb_barang.*', 'tk.nama_kategori', 'tk.gambar AS gambar_kategori', 'tp.nama_pasar',
-                        'tp.alamat AS alamat_pasar', 'tp.gambar AS gambar_pasar')
+                ->select('tb_barang.*', 'tk.nama_kategori', 'tk.gambar AS gambar_kategori', 'tp.nama_pasar', 'tp.alamat AS alamat_pasar', 'tp.gambar AS gambar_pasar')
                 ->whereBetween('harga', [$harga[0], $harga[1]])
-                ->get();
+                ->paginate(10);
+        $json_barang = $tb_barang->toJson();
+        
         if (count($barang) > 0) {
-            $tamp = '{"status": "success","data":' . $barang . ',"message":"successfully get data", "is_error":"false"}';
+            $tamp = '{"status": "success","data":' . $json_barang . ',"message":"successfully get data", "is_error":"false"}';
             $body = $res->getBody();
             $body->write($tamp);
             return $res->withHeader('Content-Type', 'application/json')->withStatus(200)->withBody($body);

@@ -58,3 +58,11 @@ $container['kategori_controller'] = function($container) {
 $container['pasar_controller'] = function($container) {
     return new \App\Controllers\pasar_controller($container);
 };
+
+$container['cart_controller'] = function($container){
+    return new \App\Controllers\cart_controller($container);
+};
+
+$container['complain_controller'] = function($container){
+    return new \App\Controllers\complain_controller($container);
+};

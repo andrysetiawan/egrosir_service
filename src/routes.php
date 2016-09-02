@@ -54,3 +54,19 @@ $app->get('/barang/status/{status}', 'barang_controller:get_by_status');
 $app->post('/barang/add', 'barang_controller:insert');
 $app->put('/barang/update/{id}', 'barang_controller:update');
 $app->delete('/barang/delete/{id}', 'barang_controller:delete');
+
+//Cart Routes
+$app->post("cart/add", 'cart_controller:insert');
+$app->get("/cart", "cart_controller:get_all");
+$app->get("/cart/{id}", "cart_controller:get_by_id");
+$app->get("/cart/user/{id}", "cart_controller:get_by_user");
+$app->put("/cart/update/{id}", "cart_controller:update");
+$app->delete("/cart/delete/{id}", "cart_controller:delete");
+
+//Complain Routes
+$app->post("/complain/add", "complain_controller:insert");
+$app->get("/complain", "complain_controller:get_all");
+$app->get("/complain/{id}", "complain_controller:get_by_id");
+$app->get("/complain/user/{id}", "complain_controller:get_by_user");
+$app->put("/complain/update/{id}", "complain_controller:update");
+$app->delete("/complain/delete/{id}", "complain_controller:delete");
