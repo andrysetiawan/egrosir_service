@@ -16,7 +16,9 @@ $container["JwtAuthentication"] = function ($container) {
                            "/user","/admin",
         		   "/pasar/add","/pasar/update/","/pasar/delete/",
         		   "/kategori/add","/kategori/update/","kategori/delete/",
-                           "/barang/add", "/barang/update/", "/barang/delete/"
+                           "/barang/add", "/barang/update/", "/barang/delete/",
+                           "/cart", "/cart/", "/cart/add", "/cart/user/", "/cart/update/", "/cart/delete/",
+                           "/complain", "/complain/", "/complain/add", "/complain/user/", "/complain/update/", "/complain/delete/"
         ],
         "passthrough" => ["/auth/signin"],
         "secret" => "hatepnganuikihihamburadul",

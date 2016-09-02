@@ -61,7 +61,7 @@ class cart_controller extends controller {
 
     public function get_all($req, $res) {
         if (false === $this->token->hasScope(['admin'])) {
-            $tamp = '{"status": "error","message":"token not allowed to insert data"}';
+            $tamp = '{"status": "error","message":"token not allowed to get data"}';
             $body = $res->getBody();
             $body->write($tamp);
             return $res->withHeader('Content-Type', 'application/json')->withStatus(403)->withBody($body);
@@ -87,7 +87,7 @@ class cart_controller extends controller {
 
     public function get_by_id($req, $res, $args) {
         if (false === $this->token->hasScope(['admin', 'user'])) {
-            $tamp = '{"status": "error","message":"token not allowed to insert data"}';
+            $tamp = '{"status": "error","message":"token not allowed to get data"}';
             $body = $res->getBody();
             $body->write($tamp);
             return $res->withHeader('Content-Type', 'application/json')->withStatus(403)->withBody($body);
@@ -112,7 +112,7 @@ class cart_controller extends controller {
 
     public function get_by_user($req, $res, $args) {
         if (false === $this->token->hasScope(['admin', 'user'])) {
-            $tamp = '{"status": "error","message":"token not allowed to insert data"}';
+            $tamp = '{"status": "error","message":"token not allowed to get data"}';
             $body = $res->getBody();
             $body->write($tamp);
             return $res->withHeader('Content-Type', 'application/json')->withStatus(403)->withBody($body);
@@ -138,7 +138,7 @@ class cart_controller extends controller {
 
     public function update($req, $res, $args) {
         if (false === $this->token->hasScope(['admin', 'user'])) {
-            $tamp = '{"status": "error","message":"token not allowed to insert data"}';
+            $tamp = '{"status": "error","message":"token not allowed to update data"}';
             $body = $res->getBody();
             $body->write($tamp);
             return $res->withHeader('Content-Type', 'application/json')->withStatus(403)->withBody($body);
