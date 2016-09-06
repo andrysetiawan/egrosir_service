@@ -66,3 +66,7 @@ $container['cart_controller'] = function($container){
 $container['complain_controller'] = function($container){
     return new \App\Controllers\complain_controller($container);
 };
+
+$container['code_generator'] = function($container){
+    return new \App\Controllers\code_generator;
+};
