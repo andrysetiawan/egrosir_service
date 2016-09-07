@@ -70,3 +70,7 @@ $container['complain_controller'] = function($container){
 $container['code_generator'] = function($container){
     return new \App\Controllers\code_generator;
 };
+
+$container['helper_class'] = function($container){
+    return new \App\Controllers\helper_class($container);
+};

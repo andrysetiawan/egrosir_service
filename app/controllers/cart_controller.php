@@ -25,10 +25,7 @@ class cart_controller extends controller {
             'id_user' => v::noWhitespace()->notEmpty(),
             'tgl_pesan' => v::notEmpty(),
             'ukuran' => v::notEmpty(),
-            'jumlah_barang' => v::notEmpty(),
-            'alamat_pengiriman' => v::noWhitespace()->notEmpty(),
-            'status_tansaksi' => v::noWhitespace()->notEmpty()->alpha(),
-            'metode_pembayaran' => v::notEmpty()
+            'jumlah_barang' => v::notEmpty()
         ));
 
         if ($validator->failed()) {
@@ -36,26 +33,24 @@ class cart_controller extends controller {
             $body->write('{"is_error":"true", "status": "error","message": "validation failed","error":' . $validator->msg() . '}');
             return $res->withHeader('Content-Type', 'application/json')->withStatus(422)->withBody($body);
         } else {
-
             $cart = new Cart();
             $cart->id_barang = $req->getParam('id_barang');
             $cart->id_user = $req->getParam('id_user');
             $cart->tgl_pesan = $req->getParam('tgl_pesan');
             $cart->ukuran = $req->getParam('ukuran');
             $cart->jumlah_barang = $req->getParam('jumlah_barang');
-            $cart->alamat_pengiriman = $req->getParam('alamat_pengiriman');
-            $cart->status_tansaksi = $req->getParam('status_tansaksi');
-            $cart->metode_pembayaran = $req->getParam('metode_pembayaran');
+            $cart->kode_cart = code_generator::generate_coupons(10, "CRT-", "-ABC");
+            print_r(code_generator::generate_coupons(4, array("length"=>6, "prefix"=>"CRT-", "suffix"=>"-ABC", "numbers"=>true)));
 
-            if ($cart->save()) {
-                $body = $res->getBody();
-                $body->write('{"status": "success","message":"Successfully store data", "is_error": "false"}');
-                return $res->withHeader('Content-Type', 'application/json')->withStatus(202)->withBody($body);
-            } else {
-                $body = $res->getBody();
-                $body->write('{"status": "error","message":"failed to store data", "is_error": "true"}');
-                return $res->withHeader('Content-Type', 'application/json')->withStatus(422)->withBody($body);
-            }
+//            if ($cart->save()) {
+//                $body = $res->getBody();
+//                $body->write('{"status": "success","message":"Successfully store data", "is_error": "false"}');
+//                return $res->withHeader('Content-Type', 'application/json')->withStatus(202)->withBody($body);
+//            } else {
+//                $body = $res->getBody();
+//                $body->write('{"status": "error","message":"failed to store data", "is_error": "true"}');
+//                return $res->withHeader('Content-Type', 'application/json')->withStatus(422)->withBody($body);
+//            }
         }
     }
 

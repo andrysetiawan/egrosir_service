@@ -56,7 +56,7 @@ $app->put('/barang/update/{id}', 'barang_controller:update');
 $app->delete('/barang/delete/{id}', 'barang_controller:delete');
 
 //Cart Routes
-$app->post("cart/add", 'cart_controller:insert');
+$app->post("/cart/add", 'cart_controller:insert');
 $app->get("/cart", "cart_controller:get_all");
 $app->get("/cart/{id}", "cart_controller:get_by_id");
 $app->get("/cart/user/{id}", "cart_controller:get_by_user");
